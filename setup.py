@@ -8,7 +8,9 @@ setup(
     author_email='mjhxyz@foxmail.com',
     packages=find_packages(),
     install_requires=[
-        'Flask==2.1.2',
+        'Flask>=2.1.2',
+        'Flask-SQLAlchemy>=3.0.3',
+        'cymysql>=0.9.18',
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',

@@ -1,5 +1,7 @@
 from flask import Flask
 
+from wink.models.base import db
+
 
 def register_blueprint(app):
     from wink.api.base import api
@@ -13,4 +15,9 @@ def create_app():
     app.config.from_object('wink.config.secure')
 
     register_blueprint(app)
+
+    # 注册 SQLAlchemy
+    db.init_app(app)
+    with app.app_context():
+        db.create_all()
     return app
