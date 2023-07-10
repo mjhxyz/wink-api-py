@@ -14,7 +14,6 @@ def role_list():
 
 @api.post('/role/add')
 def role_add():
-    print('============================')
     # 获取 json 数据
     data = request.get_json()
     # TODO 表单验证
@@ -25,4 +24,18 @@ def role_add():
     db.session.add(role)
     db.session.commit()
 
+    return Success()
+
+
+@api.post('/role/edit')
+def role_edit():
+    # 获取 json 数据
+    data = request.get_json()
+    # TODO 表单验证
+    role = WinkRole.query.filter_by(id=data['id']).first()
+    if not role:
+        return NotFoundError('角色不存在')
+    role.name = data['name']
+    role.desc = data['desc']
+    db.session.commit()
     return Success()

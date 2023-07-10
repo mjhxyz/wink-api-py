@@ -12,7 +12,8 @@ class WinkUser(Base):
     login_id = Column(String(24), unique=True, nullable=False, comment='登录ID')
     name = Column(String(24), nullable=False, comment='用户昵称')
     rid = Column(Integer, nullable=False, comment='角色ID')
-    status = Column(Integer, nullable=False, comment='状态, 1=正常, 2=禁用')
+    status = Column(Integer, nullable=False,
+                    comment='状态, 1=正常, 2=禁用', default=1)
 
     # 定义一个 _login_pwd 属性, 用于存储密码
     # 使用 @property 装饰器, _login_pwd 成为属性

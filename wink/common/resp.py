@@ -23,3 +23,8 @@ class NotFoundError(APIException):
     error_code = 2005
     data = None
     message = '资源未找到'
+
+    def __init__(self, message=None):
+        if message is not None:
+            self.message = message
+        super().__init__(self.error_code, self.message, self.data)
