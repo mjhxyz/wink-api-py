@@ -1,16 +1,22 @@
 from wink.api.base import api
+from wink.common.resp import Success
 
 
-@api.get('/login')
+@api.post('/user/login')
 def login():
-    return '登录!!!'
+    return Success({'token': '123456'})
 
 
-@api.get('/logout')
+@api.get('/user/logout')
 def logout():
     return '登出!!!'
 
 
-@api.get('/info')
+@api.get('/user/info')
 def info():
-    return '用户信息!!!'
+    return Success({
+        'roles': ['admin'],
+        'introduction': 'I am a super administrator',
+        'avatar': 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+        'name': 'Super Admin'
+    })

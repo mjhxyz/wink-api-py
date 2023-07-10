@@ -5,6 +5,7 @@ from wink.models.base import Base
 
 
 class WinkUser(Base):
+
     __tablename__ = 'wink_user'
 
     id = Column(Integer, primary_key=True, comment='用户ID')
@@ -17,7 +18,7 @@ class WinkUser(Base):
     # 使用 @property 装饰器, _login_pwd 成为属性
     # 这样设置 _login_pwd 属性的时候，就可以先加密再赋值给 _login_pwd
     _login_pwd = Column('login_pwd', String(
-        128), nullable=True, comment='登录密码')
+        128), nullable=False, comment='登录密码')
 
     @property
     def login_pwd(self):

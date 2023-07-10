@@ -5,6 +5,14 @@ def Success(data=None):
     return APIException.ok(data).to_dict()
 
 
+def List(total, items, page):
+    return APIException.ok({
+        'total': total,
+        'items': items,
+        'page': page
+    }).to_dict()
+
+
 class ServerError(APIException):
     error_code = 3000
     data = None

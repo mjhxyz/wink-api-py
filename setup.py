@@ -8,8 +8,8 @@ setup(
     author_email='mjhxyz@foxmail.com',
     packages=find_packages(),
     install_requires=[
-        'Flask>=2.1.2',
-        'Flask-SQLAlchemy>=3.0.3',
+        'Flask>=2.3.2',
+        'Flask-SQLAlchemy>=3.0.5',
         'cymysql>=0.9.18',
     ],
     classifiers=[
@@ -17,9 +17,6 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Operating System :: OS Independent',

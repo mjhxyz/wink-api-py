@@ -2,6 +2,7 @@ from flask import Flask
 from werkzeug.exceptions import HTTPException
 
 from wink.models.base import db
+from wink.common.utils import WinkJSONProvider
 
 
 def register_blueprint(app: Flask):
@@ -29,7 +30,7 @@ def register_error_handler(app: Flask):
         # 未知错误
         if app.config['DEBUG']:
             # TODO 记录日志
-            return e
+            raise e
         return ServerError()
 
 
@@ -47,5 +48,7 @@ def create_app():
         db.create_all()
 
     register_error_handler(app)
+
+    app.json = WinkJSONProvider(app)
 
     return app
