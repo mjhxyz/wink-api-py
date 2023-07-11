@@ -39,3 +39,31 @@ def role_edit():
     role.desc = data['desc']
     db.session.commit()
     return Success()
+
+
+@api.post('/role/delete')
+def role_delete():
+    # 获取 json 数据
+    data = request.get_json()
+    # TODO 表单验证
+    role = WinkRole.query.filter_by(id=data['id']).first()
+    if not role:
+        return NotFoundError('角色不存在')
+    db.session.delete(role)
+    db.session.commit()
+    return Success()
+
+
+@api.post('/role/delete_many')
+def role_delete_many():
+    # 获取 json 数据
+    data = request.get_json()
+    # TODO 表单验证
+    ids = data['ids']
+    for id in ids:
+        role = WinkRole.query.filter_by(id=id).first()
+        if not role:
+            return NotFoundError('角色不存在')
+        db.session.delete(role)
+    db.session.commit()
+    return Success()
