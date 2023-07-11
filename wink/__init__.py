@@ -10,6 +10,19 @@ def register_blueprint(app: Flask):
     app.register_blueprint(api)
 
 
+def register_plugin(app: Flask):
+
+    # Custom JSON provider
+    app.json = WinkJSONProvider(app)
+    # Flask-Login
+    from wink.api.base import login_manager
+    login_manager.init_app(app)
+    # SQLAlchemy
+    db.init_app(app)
+    with app.app_context():
+        db.create_all()
+
+
 def register_error_handler(app: Flask):
 
     @app.errorhandler(Exception)
@@ -41,14 +54,7 @@ def create_app():
     app.config.from_object('wink.config.secure')
 
     register_blueprint(app)
-
-    # 注册 SQLAlchemy
-    db.init_app(app)
-    with app.app_context():
-        db.create_all()
-
     register_error_handler(app)
-
-    app.json = WinkJSONProvider(app)
+    register_plugin(app)
 
     return app

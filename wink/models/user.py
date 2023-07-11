@@ -1,10 +1,11 @@
+from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from wink.models.base import Base
 
 
-class WinkUser(Base):
+class WinkUser(UserMixin, Base):
 
     __tablename__ = 'wink_user'
 
@@ -14,6 +15,7 @@ class WinkUser(Base):
     rid = Column(Integer, nullable=False, comment='角色ID')
     status = Column(Integer, nullable=False,
                     comment='状态, 1=正常, 2=禁用', default=1)
+    avatar = Column(String(128), nullable=False, comment='头像', default='')
 
     # 定义一个 _login_pwd 属性, 用于存储密码
     # 使用 @property 装饰器, _login_pwd 成为属性
@@ -31,3 +33,8 @@ class WinkUser(Base):
 
     def check_login_pwd(self, raw_pwd):
         return check_password_hash(self._login_pwd, raw_pwd)
+
+    # 实现 Flask-Login 方法
+    @property
+    def is_active(self):
+        return self.status == 1

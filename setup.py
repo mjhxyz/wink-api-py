@@ -11,6 +11,8 @@ setup(
         'Flask>=2.3.2',
         'Flask-SQLAlchemy>=3.0.5',
         'cymysql>=0.9.18',
+        'Flask-Login>=0.6.2',
+        'authlib>=1.2.1'
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',

@@ -4,15 +4,18 @@ from wink.common.resp import Success, NotFoundError, List
 from wink.models.base import db
 
 from flask import request
+from flask_login import current_user, login_required
 
 
 @api.get('/user/list')
+@login_required
 def user_list():
     users = WinkUser.query.all()
     return List(len(users), users, 1)
 
 
 @api.post('/user/add')
+@login_required
 def user_add():
     # 获取 json 数据
     data = request.get_json()
@@ -34,6 +37,7 @@ def user_add():
 
 
 @api.post('/user/edit')
+@login_required
 def user_edit():
     # 获取 json 数据
     data = request.get_json()
@@ -44,13 +48,13 @@ def user_edit():
     user.name = data['login_id']
     user.rid = data['rid']
     user.login_id = data['login_id']
-    user.login_pwd = data['login_pwd']
     user.status = data['status']
     db.session.commit()
     return Success()
 
 
 @api.post('/user/delete')
+@login_required
 def user_delete():
     # 获取 json 数据
     data = request.get_json()
@@ -64,6 +68,7 @@ def user_delete():
 
 
 @api.post('/user/delete_many')
+@login_required
 def user_delete_many():
     # 获取 json 数据
     data = request.get_json()
