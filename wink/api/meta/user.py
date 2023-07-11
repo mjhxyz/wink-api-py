@@ -17,6 +17,7 @@ def user_add():
     # 获取 json 数据
     data = request.get_json()
     # TODO 表单验证
+    login_id = data['login_id']
     user = WinkUser.query.filter_by(login_id=login_id).first()
     if user:
         return NotFoundError('用户已存在')
@@ -27,7 +28,6 @@ def user_add():
         login_pwd=data['login_pwd'],
         status=data['status'],
     )
-    login_id = data['login_id']
     db.session.add(user)
     db.session.commit()
     return Success()
@@ -59,5 +59,18 @@ def user_delete():
     if not user:
         return NotFoundError('用户不存在')
     db.session.delete(user)
+    db.session.commit()
+    return Success()
+
+
+@api.post('/user/delete_many')
+def user_delete_many():
+    # 获取 json 数据
+    data = request.get_json()
+    # TODO 表单验证
+    ids = data['ids']
+    users = WinkUser.query.filter(WinkUser.id.in_(ids)).all()
+    for user in users:
+        db.session.delete(user)
     db.session.commit()
     return Success()

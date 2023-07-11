@@ -28,3 +28,14 @@ class NotFoundError(APIException):
         if message is not None:
             self.message = message
         super().__init__(self.error_code, self.message, self.data)
+
+
+class ClientError(APIException):
+    error_code = 2006
+    data = None
+    message = '资源已存在'
+
+    def __init__(self, message=None):
+        if message is not None:
+            self.message = message
+        super().__init__(self.error_code, self.message, self.data)
