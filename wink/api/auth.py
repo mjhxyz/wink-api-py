@@ -15,7 +15,6 @@ def login():
     user = WinkUser.query.filter_by(login_id=login_id).first()
     print(user)
     if not user or not user.check_login_pwd(login_pwd):
-        print('error???')
         return LoginError()
     token = generate_token({'user_id': user.id})
     return Success({'token': token})
