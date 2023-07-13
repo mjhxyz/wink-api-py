@@ -10,6 +10,18 @@ def register_blueprint(app: Flask):
     app.register_blueprint(api)
 
 
+def pre_process_config(app: Flask):
+    config = app.config
+    if 'DB_META' not in config:
+        raise Exception('请先配置 DB_META 参数!!!')
+    config['SQLALCHEMY_DATABASE_URI'] = config['DB_META']
+    if 'DB_BI' in config:
+        db_bi = config['DB_BI']
+        if 'meta' in db_bi:
+            raise Exception('DB_BI 中不能包含 meta 数据源!!!')
+        config['SQLALCHEMY_BINDS'] = config['DB_BI']
+
+
 def register_plugin(app: Flask):
 
     # Custom JSON provider
@@ -52,6 +64,8 @@ def create_app():
 
     app.config.from_object('wink.config.setting')
     app.config.from_object('wink.config.secure')
+
+    pre_process_config(app)
 
     register_blueprint(app)
     register_error_handler(app)
