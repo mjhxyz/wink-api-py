@@ -5,9 +5,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from wink.models.base import Base
 
 
-class WinkFields(Base):
+class WinkField(Base):
 
-    __tablename__ = 'wink_fields'
+    __tablename__ = 'wink_field'
 
     id = Column(Integer, primary_key=True, comment='字段ID', autoincrement=True)
     meta_code = Column(String(100), nullable=False, comment='Meta code')

@@ -87,7 +87,7 @@ def menu_delete_many():
 
 
 @api.get('/menu/tree')
-# @login_required
+@login_required
 def menu_tree():
     menus = WinkMenu.query.all()
     # menu 的结构为 {parent_id: 1, id: 2, ....}
