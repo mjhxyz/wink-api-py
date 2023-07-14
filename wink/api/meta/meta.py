@@ -90,14 +90,18 @@ def meta_add_meta():
     # 获取 json 数据
     data = request.get_json()
     # TODO 表单验证
-    meta = WinkMeta.query.filter_by(name=data['name']).first()
+    code = data['code']
+    meta = WinkMeta.query.filter_by(code=code).first()
     if meta:
-        return NotFoundError('meta 已存在')
+        return NotFoundError(f'meta [{code}] 已存在')
     # 获取所有字段
     fields = db_utils.get_table_field_list(data['source'], data['table'])
     # 获取主键
     pk = db_utils.get_primary_key(data['source'], data['table'])
     print(fields)
+    # 添加之前，删除已有的字段记录
+    WinkField.query.filter_by(meta_code=code).delete()
+
     # 事务添加 meta 记录和字段记录
     try:
         meta = WinkMeta(
