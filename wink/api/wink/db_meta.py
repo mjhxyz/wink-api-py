@@ -12,10 +12,18 @@ from flask_login import login_required
 @api.get('/wink/db/table_list')
 @login_required
 def db_table_list():
+    source = request.args.get('source', 'meta')
     table_names = []
-    inspector = inspect(db.engine)
-    for table_name in inspector.get_table_names():
-        table_names.append(table_name)
+    if source == 'meta':
+        inspector = inspect(db.engine)
+        table_names = inspector.get_table_names()
+    else:
+        config = current_app.config
+        db_bi = config['DB_BI']
+        if source not in db_bi:
+            return NotFoundError('数据源不存在')
+        inspector = inspect(db.get_engine(source))
+        table_names = inspector.get_table_names()
     return Success(data=table_names)
 
 
@@ -32,9 +40,9 @@ def db_source_list():
 
 
 # 一定要鉴权
-@api.get('/wink/db/table_info')
+@api.get('/wink/db/table_field_list')
 @login_required
-def db_table_info():
+def table_field_list():
     table_name = request.args.get('table_name')
     source = request.args.get('source', 'meta')
     if source == 'meta':
