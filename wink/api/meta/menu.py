@@ -100,15 +100,15 @@ def menu_tree():
         view = WinkMenuView(menu)
         views.append(view)
 
-    # 2. 转换为树形结构
+    # 2. 转换为树形结构, 从根节点开始, 可能有无限层
     tree = []
     for view in views:
         if view.parent_id == 0:
             tree.append(view)
         else:
-            for v in views:
-                if v.id == view.parent_id:
-                    v.children.append(view)
+            for parent in views:
+                if view.parent_id == parent.id:
+                    parent.children.append(view)
                     break
 
     return List(len(tree), tree, 1)
