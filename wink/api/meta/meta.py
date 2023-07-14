@@ -9,6 +9,13 @@ from flask import request
 from flask_login import current_user, login_required
 
 
+@api.get('/meta/all')
+@login_required
+def meta_all():
+    metas = WinkMeta.query.all()
+    return Success(data=metas)
+
+
 @api.get('/meta/list')
 @login_required
 def meta_list():

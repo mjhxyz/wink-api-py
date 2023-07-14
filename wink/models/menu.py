@@ -13,7 +13,7 @@ class WinkMenu(Base):
     name = Column(String(100), nullable=False, comment='菜单名称')
     type = Column(String(100), nullable=False,
                   comment='菜单类型, dir=目录, 其他的是特殊菜单的类型')
-    weight = Column(Integer, nullable=False, comment='菜单权重, 越大越靠前')
+    weight = Column(Integer, nullable=False, comment='菜单权重, 越大越靠前', default=10)
     parent_id = Column(Integer, nullable=False,
                        comment='父级菜单ID, 0表示根节点菜单', default=0)
     setting = Column(String(2000), nullable=False, comment='菜单配置, json格式')

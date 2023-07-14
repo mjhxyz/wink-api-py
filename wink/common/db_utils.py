@@ -1,9 +1,37 @@
 from wink.models.base import db
 from wink.common.resp import NotFoundError
 
-from sqlalchemy import inspect
+from sqlalchemy import inspect, MetaData, Table
 from flask import current_app
 from sqlalchemy.exc import NoSuchTableError
+
+
+def get_source_engine(source):
+    config = current_app.config
+    if source == 'meta':
+        return db.engine
+    if not is_source_exists(source):
+        raise NotFoundError('数据源不存在')
+    db_bi = config['DB_BI']
+    return db.get_engine(source)
+
+
+def execute_sql(source, sql):
+    engine = get_source_engine(source)
+    with engine.connect() as conn:
+        res = conn.execute(sql)
+        mapping_list = res.mappings().all()
+        result = []
+        for mapping in mapping_list:
+            result.append(dict(mapping))
+        return result
+
+
+def generate_table(source, table_name):
+    engine = get_source_engine(source)
+    metadata = MetaData()
+    metadata.reflect(bind=engine)
+    return Table(table_name, metadata, autoload=True)
 
 
 def is_source_exists(source):

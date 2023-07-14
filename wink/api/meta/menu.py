@@ -112,3 +112,27 @@ def menu_tree():
                     break
 
     return List(len(tree), tree, 1)
+
+
+@api.post('/menu/add_menu')
+@login_required
+def menu_add_menu():
+    # 获取 json 数据
+    data = request.get_json()
+    # TODO 表单验证
+    menu = WinkMenu.query.filter_by(code=data['code']).first()
+    # TODO 修改
+    parent_id = 4
+    if menu:
+        return NotFoundError('菜单已存在')
+    menu = WinkMenu(
+        code=data['code'],
+        name=data['name'],
+        type=data['type'],
+        parent_id=parent_id,
+        setting=data['setting'],
+    )
+
+    db.session.add(menu)
+    db.session.commit()
+    return Success()

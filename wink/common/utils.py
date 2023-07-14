@@ -3,6 +3,7 @@ from authlib.jose import jwt, JoseError
 
 from flask.json.provider import DefaultJSONProvider, _default as _default_json
 from flask import current_app
+from sqlalchemy.engine.row import Row
 
 from wink.models.base import Base
 
