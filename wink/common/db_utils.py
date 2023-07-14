@@ -6,6 +6,25 @@ from flask import current_app
 from sqlalchemy.exc import NoSuchTableError
 
 
+def is_source_exists(source):
+    config = current_app.config
+    if source == 'meta':
+        return True
+    if 'DB_BI' not in config:
+        return False
+    db_bi = config['DB_BI']
+    return source in db_bi
+
+
+def get_source_inspector(source):
+    config = current_app.config
+    if source == 'meta':
+        return inspect(db.engine)
+    if not is_source_exists(source):
+        raise NotFoundError('数据源不存在')
+    return inspect(db.get_engine(source))
+
+
 def get_source_list():
     config = current_app.config
     result = ['meta']
@@ -17,29 +36,13 @@ def get_source_list():
 
 def get_table_list(source):
     table_names = []
-    if source == 'meta':
-        inspector = inspect(db.engine)
-        table_names = inspector.get_table_names()
-    else:
-        config = current_app.config
-        db_bi = config['DB_BI']
-        if source not in db_bi:
-            return NotFoundError('数据源不存在')
-        inspector = inspect(db.get_engine(source))
-        table_names = inspector.get_table_names()
+    inspector = get_source_inspector(source)
+    table_names = inspector.get_table_names()
     return table_names
 
 
 def get_table_field_list(source, table_name):
-    if source == 'meta':
-        inspector = inspect(db.engine)
-    else:
-        config = current_app.config
-        db_bi = config['DB_BI']
-        if source not in db_bi:
-            raise NotFoundError('数据源不存在')
-        inspector = inspect(db.get_engine(source))
-
+    inspector = get_source_inspector(source)
     try:
         columns = inspector.get_columns(table_name)
     except NoSuchTableError:
@@ -54,3 +57,13 @@ def get_table_field_list(source, table_name):
             'comment': column['comment']
         })
     return result
+
+
+def get_primary_key(source, table_name):
+    inspector = get_source_inspector(source)
+    try:
+        primary_key = inspector.get_pk_constraint(
+            table_name)['constrained_columns']
+        return primary_key
+    except NoSuchTableError:
+        raise NotFoundError('数据表不存在')
