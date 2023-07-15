@@ -105,7 +105,6 @@ def meta_add_meta():
     fields = db_utils.get_table_field_list(data['source'], data['table'])
     # 获取主键
     pk = db_utils.get_primary_key(data['source'], data['table'])
-    print(fields)
     # 添加之前，删除已有的字段记录
     WinkField.query.filter_by(meta_code=code).delete()
 

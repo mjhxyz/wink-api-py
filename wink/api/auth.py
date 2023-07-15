@@ -13,7 +13,6 @@ def login():
     login_id = form['login_id']
     login_pwd = form['login_pwd']
     user = WinkUser.query.filter_by(login_id=login_id).first()
-    print(user)
     if not user or not user.check_login_pwd(login_pwd):
         return LoginError()
     token = generate_token({'user_id': user.id})
