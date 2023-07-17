@@ -14,7 +14,8 @@ class WinkField(Base):
     weight = Column(Integer, nullable=False, comment='字段权重, 越大越靠前')
     name = Column(String(100), nullable=False, comment='字段名称')
     label = Column(String(100), nullable=False, comment='字段中文名称')
-    type = Column(String(255), nullable=False, comment='字段类型, JSON格式')
+    type = Column(String(255), nullable=False, comment='控件类型')
+    exp = Column(String(800), nullable=True, comment='字段表达式')
 
     width = Column(Integer, nullable=False, comment='字段宽度', default=100)
     align = Column(String(6), nullable=False,
@@ -34,3 +35,12 @@ class WinkField(Base):
                          comment='是否可编辑, 1=是, 0=否', default=1)
     is_addable = Column(TINYINT(1), nullable=False,
                         comment='是否可新增, 1=是, 0=否', default=1)
+
+    is_edit = Column(TINYINT(1), nullable=False,
+                     comment='是否可编辑, 1=是, 0=否', default=1)
+    is_add = Column(TINYINT(1), nullable=False,
+                    comment='是否可新增, 1=是, 0=否', default=1)
+    add_status = Column(Integer, nullable=False,
+                        comment='新增状态, 0=正常, 1=只读, 2=隐藏, 3=禁用', default=0)
+    edit_status = Column(Integer, nullable=False,
+                         comment='编辑状态, 0=正常, 1=只读, 2=隐藏, 3=禁用', default=0)

@@ -29,12 +29,26 @@ def field_add():
     if field:
         return NotFoundError('字段已存在')
     field = WinkField(
-        code=data['code'],
-        name=data['name'],
-        type=data['type'],
+        meta_code=data['meta_code'],
         weight=data['weight'],
-        parent_id=data['parent_id'],
-        setting=data['setting'],
+        name=data['name'],
+        label=data['label'],
+        type=data['type'],
+        exp=data['exp'],
+        width=data['width'],
+        align=data['align'],
+        placeholder=data['placeholder'],
+        required=data['required'],
+        is_hide=data['is_hide'],
+        max_length=data['max_length'],
+        min_length=data['min_length'],
+        default_value=data['default_value'],
+        is_editable=data['is_editable'],
+        is_addable=data['is_addable'],
+        # is_edit=data['is_edit'],
+        # is_add=data['is_add'],
+        # add_status=data['add_status'],
+        # edit_status=data['edit_status'],
     )
 
     db.session.add(field)
@@ -51,12 +65,26 @@ def field_edit():
     field = WinkField.query.filter_by(id=data['id']).first()
     if not field:
         return NotFoundError('field 不存在')
-    field.code = data['code']
-    field.name = data['name']
-    field.type = data['type']
+    field.meta_code = data['meta_code']
     field.weight = data['weight']
-    field.parent_id = data['parent_id']
-    field.setting = data['setting']
+    field.name = data['name']
+    field.label = data['label']
+    field.type = data['type']
+    field.exp = data['exp']
+    field.width = data['width']
+    field.align = data['align']
+    field.placeholder = data['placeholder']
+    field.required = data['required']
+    field.is_hide = data['is_hide']
+    field.max_length = data['max_length']
+    field.min_length = data['min_length']
+    field.default_value = data['default_value']
+    field.is_editable = data['is_editable']
+    field.is_addable = data['is_addable']
+    # field.is_edit = data['is_edit']
+    # field.is_add = data['is_add']
+    # field.add_status = data['add_status']
+    # field.edit_status = data['edit_status']
     db.session.commit()
     return Success()
 
