@@ -14,7 +14,7 @@ class WinkUser(UserMixin, Base):
     name = Column(String(24), nullable=False, comment='用户昵称')
     rid = Column(Integer, nullable=False, comment='角色ID')
     status = Column(Integer, nullable=False,
-                    comment='状态, 1=正常, 2=禁用', default=1)
+                    comment='状态: 0=禁用, 1=正常', default=1)
     avatar = Column(String(128), nullable=False, comment='头像', default='')
 
     # 定义一个 _login_pwd 属性, 用于存储密码

@@ -119,14 +119,18 @@ def meta_add_meta():
         )
         db.session.add(meta)
         db.session.flush()
+        # 可以先尝试检查字段类型
         for field in fields:
+            # 获取字段的 label
+            field_label = db_utils.get_field_label(field)
+
             db.session.add(WinkField(
                 meta_code=data['code'],
                 weight=10,
                 name=field['name'],
-                label=field['comment'] or field['name'],
+                label=field_label,
                 type=field['type'],
-                width=100,
+                width=100
             ))
         db.session.commit()
     except Exception as e:

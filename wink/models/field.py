@@ -14,8 +14,9 @@ class WinkField(Base):
     weight = Column(Integer, nullable=False, comment='字段权重, 越大越靠前')
     name = Column(String(100), nullable=False, comment='字段名称')
     label = Column(String(100), nullable=False, comment='字段中文名称')
-    type = Column(String(255), nullable=False, comment='控件类型')
+    type = Column(String(255), nullable=False, comment='字段类型')
     exp = Column(String(800), nullable=True, comment='字段表达式')
+    compo = Column(String(100), nullable=True, comment='字段组件', default='文本框')
 
     width = Column(Integer, nullable=False, comment='字段宽度', default=100)
     align = Column(String(6), nullable=False,
