@@ -126,38 +126,10 @@ def parse_comment(comment):
     return field_name, result
 
 
-def get_field_compo(field):
-    # 获取字段所用组件
-    type_obj = field['type_obj']
-    sqlalchemy_type = type_obj.type
-
-    if isinstance(sqlalchemy_type, String):
-        return '文本框'
-    if isinstance(sqlalchemy_type, Text):
-        return '文本域'
-    if isinstance(sqlalchemy_type, Integer):
-        return '整数框'
-    if isinstance(sqlalchemy_type, Float):
-        return '浮点框'
-    if isinstance(sqlalchemy_type, Date):
-        return '日期框'
-    if isinstance(sqlalchemy_type, DateTime):
-        return '日期时间框'
-
-    field_label, field_mappping = db_utils.parse_comment(field['comment'])
-    if isinstance(sqlalchemy_type, TINYINT):
-        if not field_mappping:
-            return '布尔框'
-
-    return comp_name
-
-
 def get_field_label(field):
     # 获取字段标签
     comment = field['comment'] or field['name']
-    field_label, _ = db_utils.parse_comment(comment)
-    if not field_label:
-        field_label = field['name']
+    field_label, _ = parse_comment(comment)
     return field_label
 
 ###################### 字段处理 END ######################
