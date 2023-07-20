@@ -146,3 +146,14 @@ def save_table_record(source, table, data):
         conn.execute(table.insert(), data)
         conn.commit()
     return data
+
+
+def edit_table_record(source, table, pk, pk_val, data):
+    # 更新数据
+    engine = get_source_engine(source)
+    table = generate_table(source, table)
+    with engine.connect() as conn:
+        conn.execute(table.update().where(
+            getattr(table.c, pk) == pk_val), data)
+        conn.commit()
+    return data

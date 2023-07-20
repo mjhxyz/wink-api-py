@@ -126,3 +126,35 @@ def add_meta_record(meta_code, data):
     source = meta.source
     # 保存数据
     db_utils.save_table_record(source, table, save_data)
+
+
+def edit_meta_record(meta_code, data):
+    # 更新 meta 对应的表记录
+    meta = WinkMeta.query.filter_by(code=meta_code).first()
+    if not meta:
+        raise NotFoundError(f'meta [{meta_code}] 不存在')
+    # 获取 meta 的字段列表
+    fields = WinkField.query.filter_by(meta_code=meta_code).all()
+    # 挑选出需要保存的字段
+    save_fields = [field for field in fields if field.is_edit]
+    # 如果 save_fields 为空，直接返回
+    if not save_fields:
+        return
+    # 获取主键字段
+    pk = meta.pk
+    if not pk:
+        raise NotFoundError(f'meta [{meta_code}] 不存在主键, 无法更新')
+    if pk not in data:
+        raise NotFoundError(f'主键字段 [{pk}] 不存在')
+    pk_val = data[pk]
+    # 如果 data 中不存在 save_fields 中的字段，直接报错
+    save_data = {}
+    for field in save_fields:
+        if field.name not in data:
+            raise NotFoundError(f'字段 [{field.name}] 不存在')
+        save_data[field.name] = data[field.name]
+    # 获取要保存的表和数据源
+    table = meta.table
+    source = meta.source
+    # 保存数据
+    db_utils.edit_table_record(source, table, pk, pk_val, save_data)
