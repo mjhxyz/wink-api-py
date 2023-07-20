@@ -122,7 +122,7 @@ def menu_add_menu():
     # TODO 表单验证
     menu = WinkMenu.query.filter_by(code=data['code']).first()
     # TODO 修改
-    parent_id = 4
+    parent_id = 1
     if menu:
         return NotFoundError('菜单已存在')
     menu = WinkMenu(

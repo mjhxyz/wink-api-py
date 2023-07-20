@@ -45,10 +45,8 @@ def field_add():
         max_length=data['max_length'],
         min_length=data['min_length'],
         default_value=data['default_value'],
-        is_editable=data['is_editable'],
-        is_addable=data['is_addable'],
-        # is_edit=data['is_edit'],
-        # is_add=data['is_add'],
+        is_edit=data['is_edit'],
+        is_add=data['is_add'],
         # add_status=data['add_status'],
         # edit_status=data['edit_status'],
     )
