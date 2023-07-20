@@ -77,14 +77,20 @@ def add_meta(data):
             field_type = field['type']
             if '(' in field_type:
                 field_type = field_type.split('(')[0]
+            field_name = field['name']
             field_dict = {
                 'meta_code': data['code'],
                 'weight': 10,
-                'name': field['name'],
+                'name': field_name,
                 'type': field_type,
                 'width': 100,
                 'label': db_utils.get_field_label(field)
             }
+            if field_name == pk:
+                continue
+            # 主键字段默认为不可添加不可编辑
+            field_dict['is_addable'] = False
+            field_dict['is_editable'] = False
             _generate_field_compo(field, field_dict)
 
             db.session.add(WinkField(**field_dict))
