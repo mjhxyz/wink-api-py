@@ -106,7 +106,6 @@ def add_meta_record(meta_code, data):
     save_fields = [field for field in fields if field.is_addable]
     # 如果 save_fields 为空，直接返回
     if not save_fields:
-        print('怎么回事')
         return
     # 如果 data 中不存在 save_fields 中的字段，直接报错
     save_data = {}
@@ -117,7 +116,5 @@ def add_meta_record(meta_code, data):
     # 获取要保存的表和数据源
     table = meta.table
     source = meta.source
-    print('这里!!!')
     # 保存数据
     db_utils.save_table_record(source, table, save_data)
-    print('那里')

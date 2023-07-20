@@ -140,9 +140,6 @@ def get_field_label(field):
 
 def save_table_record(source, table, data):
     # 保存数据
-    # data: {'id': 1, 'name': 'xxx', 'age': 18}
-    # 返回: {'id': 1, 'name': 'xxx'}
-    # save_fields 表示只保存的字段, 没有的字段默认
     engine = get_source_engine(source)
     table = generate_table(source, table)
     with engine.connect() as conn:
