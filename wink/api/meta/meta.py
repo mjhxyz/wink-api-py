@@ -99,3 +99,13 @@ def meta_add_meta():
     # TODO 表单验证
     meta_utils.add_meta(data)
     return Success()
+
+
+@api.post('/meta/add_record/<meta_code>')
+@login_required
+def meta_add_record(meta_code):
+    # 保存 meta 记录
+    data = request.get_json()
+    # TODO 表单验证
+    meta_utils.add_meta_record(meta_code, data)
+    return Success()

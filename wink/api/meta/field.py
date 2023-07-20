@@ -121,7 +121,7 @@ def field_delete_many():
 
 
 @api.get('/field/mapping')
-# @login_required
+@login_required
 def field_mapping():
     args = request.args
     field_id = args.get('field_id')
