@@ -81,10 +81,8 @@ def field_edit():
     field.max_length = data['max_length']
     field.min_length = data['min_length']
     field.default_value = data['default_value']
-    field.is_editable = data['is_editable']
-    field.is_addable = data['is_addable']
-    # field.is_edit = data['is_edit']
-    # field.is_add = data['is_add']
+    field.is_edit = data['is_edit']
+    field.is_add = data['is_add']
     # field.add_status = data['add_status']
     # field.edit_status = data['edit_status']
     db.session.commit()

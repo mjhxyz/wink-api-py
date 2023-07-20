@@ -84,13 +84,15 @@ def add_meta(data):
                 'name': field_name,
                 'type': field_type,
                 'width': 100,
-                'label': db_utils.get_field_label(field)
+                'label': db_utils.get_field_label(field),
+                'required': 1,
             }
-            if field_name == pk:
-                continue
-            # 主键字段默认为不可添加不可编辑
-            field_dict['is_addable'] = False
-            field_dict['is_editable'] = False
+            if pk and field_name == pk[0]:
+                # 主键字段默认为不可添加不可编辑
+                field_dict['is_add'] = 0
+                field_dict['is_edit'] = 0
+            # placeholder 默认为 "请输入${label}"
+            field_dict['placeholder'] = f'请输入{field_dict["label"]}'
             _generate_field_compo(field, field_dict)
 
             db.session.add(WinkField(**field_dict))
@@ -109,7 +111,7 @@ def add_meta_record(meta_code, data):
     # 获取 meta 的字段列表
     fields = WinkField.query.filter_by(meta_code=meta_code).all()
     # 挑选出需要保存的字段
-    save_fields = [field for field in fields if field.is_addable]
+    save_fields = [field for field in fields if field.is_add]
     # 如果 save_fields 为空，直接返回
     if not save_fields:
         return
