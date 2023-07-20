@@ -1,8 +1,10 @@
 from wink.api.base import api
 from wink.models.field import WinkField
+from wink.models.mapping import WinkMapping
 from wink.common.resp import Success, NotFoundError, List
 from wink.models.base import db
 from wink.api.views.menu import WinkMenuView
+from wink.common import db_utils
 
 from flask import request
 from flask_login import current_user, login_required
@@ -116,3 +118,30 @@ def field_delete_many():
         db.session.delete(field)
     db.session.commit()
     return Success()
+
+
+@api.get('/field/mapping')
+# @login_required
+def field_mapping():
+    args = request.args
+    field_id = args.get('field_id')
+    if not field_id:
+        raise NotFoundError('获取映射失败,没有提供 field_id')
+    # TODO 表单验证
+    field = WinkField.query.filter_by(id=field_id).first()
+    if not field:
+        raise NotFoundError('字段不存在')
+    if field.compo != '下拉框':
+        raise NotFoundError('字段组件类型不是下拉框')
+    exp = field.exp
+    if not exp:
+        return Success([])
+    if exp.index(';') == -1:
+        raise NotFoundError('字段映射表达式错误')
+    exp_list = exp.split(';')
+    if len(exp_list) != 2:
+        raise NotFoundError('字段映射表达式错误')
+    sql, source = exp_list
+    print(sql, source)
+    result = db_utils.execute_sql(source, sql)
+    return Success(result)

@@ -45,8 +45,7 @@ def _generate_field_compo(field, field_dict):
                 field=field_name,
             )
             db.session.add(mapping)
-        field_dict['exp'] = f'''
-select value ,name from wink_mapping where meta_code = '{meta_code}' and field = '{field_name}';ds=meta'''
+        field_dict['exp'] = f'''select value ,name from wink_mapping where meta_code = '{meta_code}' and field = '{field_name}';meta'''
 
 
 def add_meta(data):
@@ -75,11 +74,14 @@ def add_meta(data):
         # 字段记录
         fields = db_utils.get_table_field_list(data['source'], data['table'])
         for field in fields:
+            field_type = field['type']
+            if '(' in field_type:
+                field_type = field_type.split('(')[0]
             field_dict = {
                 'meta_code': data['code'],
                 'weight': 10,
                 'name': field['name'],
-                'type': field['type'],
+                'type': field_type,
                 'width': 100,
                 'label': db_utils.get_field_label(field)
             }

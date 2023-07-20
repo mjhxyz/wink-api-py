@@ -6,6 +6,7 @@ from flask import current_app
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy import Integer, String, Text, Float, Date, DateTime, Boolean, JSON, LargeBinary, Numeric
 from sqlalchemy.dialects.mysql import TINYINT
+from sqlalchemy import text
 
 
 def get_source_engine(source):
@@ -21,6 +22,8 @@ def get_source_engine(source):
 def execute_sql(source, sql):
     engine = get_source_engine(source)
     with engine.connect() as conn:
+        if isinstance(sql, str):
+            sql = text(sql)
         res = conn.execute(sql)
         mapping_list = res.mappings().all()
         result = []
