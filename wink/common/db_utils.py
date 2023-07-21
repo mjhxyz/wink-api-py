@@ -157,3 +157,23 @@ def edit_table_record(source, table, pk, pk_val, data):
             getattr(table.c, pk) == pk_val), data)
         conn.commit()
     return data
+
+
+def edit_delete_one_record(source, table, pk, pk_val):
+    # 删除数据
+    engine = get_source_engine(source)
+    table = generate_table(source, table)
+    with engine.connect() as conn:
+        conn.execute(table.delete().where(
+            getattr(table.c, pk) == pk_val))
+        conn.commit()
+
+
+def edit_delete_many_record(source, table, pk, pk_val_list):
+    # 批量删除数据
+    engine = get_source_engine(source)
+    table = generate_table(source, table)
+    with engine.connect() as conn:
+        conn.execute(table.delete().where(
+            getattr(table.c, pk).in_(pk_val_list)))
+        conn.commit()

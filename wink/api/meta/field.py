@@ -140,6 +140,5 @@ def field_mapping():
     if len(exp_list) != 2:
         raise NotFoundError('字段映射表达式错误')
     sql, source = exp_list
-    print(sql, source)
     result = db_utils.execute_sql(source, sql)
     return Success(result)

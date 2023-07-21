@@ -158,3 +158,26 @@ def edit_meta_record(meta_code, data):
     source = meta.source
     # 保存数据
     db_utils.edit_table_record(source, table, pk, pk_val, save_data)
+
+
+def delete_meta_record(meta_code, data):
+    # 删除 meta 对应的表记录
+    meta = WinkMeta.query.filter_by(code=meta_code).first()
+    if not meta:
+        raise NotFoundError(f'meta [{meta_code}] 不存在')
+    # 获取主键字段
+    pk = meta.pk
+    if not pk:
+        raise NotFoundError(f'meta [{meta_code}] 不存在主键, 无法删除')
+    if pk not in data:
+        raise NotFoundError(f'主键字段 [{pk}] 不存在')
+    pk_val = data[pk]
+    # 获取要保存的表和数据源
+    table = meta.table
+    source = meta.source
+    if len(pk_val) == 1:
+        # 删除单条记录
+        db_utils.edit_delete_one_record(source, table, pk, pk_val[0])
+    else:
+        # 删除多条记录
+        db_utils.edit_delete_many_record(source, table, pk, pk_val)

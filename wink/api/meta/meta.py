@@ -119,3 +119,13 @@ def meta_edit_record(meta_code):
     # TODO 表单验证
     meta_utils.edit_meta_record(meta_code, data)
     return Success()
+
+
+@api.post('/meta/delete_record/<meta_code>')
+@login_required
+def meta_delete_record(meta_code):
+    # 删除 meta 记录, 可以批量删除也可以单个删除
+    data = request.get_json()
+    # TODO 表单验证
+    meta_utils.delete_meta_record(meta_code, data)
+    return Success()
