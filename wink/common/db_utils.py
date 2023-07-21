@@ -9,6 +9,18 @@ from sqlalchemy.dialects.mysql import TINYINT
 from sqlalchemy import text
 
 
+def get_source_str(exp):
+    if not exp:
+        raise NotFoundError('表达式格式错误')
+    exp = exp.strip()
+    if not exp:
+        raise NotFoundError('表达式格式错误')
+    exp_list = exp.split(';')
+    if len(exp_list) != 2:
+        raise NotFoundError('表达式格式错误')
+    return exp_list
+
+
 def get_source_engine(source):
     config = current_app.config
     if source == 'meta':
