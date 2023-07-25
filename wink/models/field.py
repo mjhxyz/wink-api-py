@@ -11,7 +11,7 @@ class WinkField(Base):
 
     id = Column(Integer, primary_key=True, comment='字段ID', autoincrement=True)
     meta_code = Column(String(100), nullable=False, comment='Meta编码')
-    weight = Column(Integer, nullable=False, comment='字段权重, 越大越靠前',)
+    weight = Column(Integer, nullable=False, comment='字段权重',)
     name = Column(String(100), nullable=False, comment='字段名称')
     label = Column(String(100), nullable=False, comment='字段中文名称')
     type = Column(String(255), nullable=False, comment='字段类型')
