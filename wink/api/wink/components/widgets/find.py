@@ -27,5 +27,8 @@ def wink_widget_find():
     if not exp:
         return NotFoundError('字段没有表达式')
     sql, source = db_utils.get_source_str(exp)
-    res = db_utils.execute_sql(source, sql)
-    return Success(res)
+    res, field_list = db_utils.query_sql(source, sql)
+    return Success({
+        'data': res,
+        'field_list': field_list,
+    })

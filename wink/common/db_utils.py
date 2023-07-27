@@ -31,6 +31,21 @@ def get_source_engine(source):
     return db.get_engine(source)
 
 
+def query_sql(source, sql):
+    engine = get_source_engine(source)
+    with engine.connect() as conn:
+        if isinstance(sql, str):
+            sql = text(sql)
+        res = conn.execute(sql)
+        field_list = res.keys()
+        mapping_list = res.mappings().all()
+        result = []
+        for mapping in mapping_list:
+            result.append(dict(mapping))
+        return result, list(field_list)
+    
+
+
 def execute_sql(source, sql):
     engine = get_source_engine(source)
     with engine.connect() as conn:
