@@ -32,6 +32,8 @@ def register_plugin(app: Flask):
     # SQLAlchemy
     db.init_app(app)
     with app.app_context():
+        # import all models
+        from wink import models
         db.create_all()
 
 

@@ -13,7 +13,7 @@ class Base(db.Model):
     add_time = db.Column(db.DateTime, index=True, nullable=False,
                          default=datetime.now, comment='添加时间')
     update_time = db.Column(
-        db.DateTime, index=True, default=datetime.now, nullable=False, onupdate=datetime.now, comment='更新时间')
+        db.DateTime, index=True, default=datetime.now, onupdate=datetime.now, comment='更新时间')
 
     def set_attrs(self, attrs_dict):
         # 接受字典参数, 用于批量赋值
