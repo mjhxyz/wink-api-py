@@ -67,7 +67,7 @@ def create_app():
     app.config.from_object('wink.config.setting')
     app.config.from_object('wink.config.secure')
 
-    # import flask_login
+    # import flask_login # 调试时使用
     # flask_login.login_required = lambda f: f
 
     pre_process_config(app)

@@ -3,6 +3,7 @@ from wink.models.menu import WinkMenu
 from wink.common.resp import Success, NotFoundError, List
 from wink.models.base import db
 from wink.api.views.menu import WinkMenuView
+from wink.common.bi_hook import bi_hook
 
 from flask import request
 from flask_login import current_user, login_required
@@ -131,6 +132,9 @@ def menu_add_menu():
         parent_id=data['parent_id'],
         setting=data['setting'],
     )
+
+    # hook 住
+    bi_hook('menu_hook', 'wink_menu', 'wink_menu', 'add', data)
 
     db.session.add(menu)
     db.session.commit()

@@ -1,9 +1,11 @@
 from wink.api.base import api
 from wink.models.meta import WinkMeta
+from wink.models.menu import WinkMenu
 from wink.models.field import WinkField
 from wink.common.resp import Success, NotFoundError, List
 from wink.models.base import db
 from wink.common import db_utils, meta_utils
+from wink.common.bi_hook import bi_hook
 
 from flask import request
 from flask_login import current_user, login_required
@@ -106,7 +108,12 @@ def meta_add_meta():
 def meta_add_record(meta_code):
     # 保存 meta 记录
     data = request.get_json()
+    args = request.args  # 主要用来获取 menu_code
     # TODO 表单验证
+    menu_code = args.get('menu_code')
+    menu = WinkMenu.query.filter_by(code=menu_code).first()
+    bi_hook(menu.bi_hook, menu_code, meta_code, 'add', data)
+
     meta_utils.add_meta_record(meta_code, data)
     return Success()
 
@@ -116,7 +123,12 @@ def meta_add_record(meta_code):
 def meta_edit_record(meta_code):
     # 保存 meta 记录
     data = request.get_json()
+    args = request.args  # 主要用来获取 menu_code
     # TODO 表单验证
+    menu_code = args.get('menu_code')
+    menu = WinkMenu.query.filter_by(code=menu_code).first()
+    bi_hook(menu.bi_hook, menu_code, meta_code, 'edit', data)
+
     meta_utils.edit_meta_record(meta_code, data)
     return Success()
 
@@ -126,6 +138,11 @@ def meta_edit_record(meta_code):
 def meta_delete_record(meta_code):
     # 删除 meta 记录, 可以批量删除也可以单个删除
     data = request.get_json()
+    args = request.args  # 主要用来获取 menu_code
     # TODO 表单验证
+    menu_code = args.get('menu_code')
+    menu = WinkMenu.query.filter_by(code=menu_code).first()
+    bi_hook(menu.bi_hook, menu_code, meta_code, 'delete', data)
+
     meta_utils.delete_meta_record(meta_code, data)
     return Success()

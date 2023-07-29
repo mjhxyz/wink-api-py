@@ -19,6 +19,7 @@ class WinkMenu(Base):
     setting = Column(String(2000), nullable=False, comment='菜单配置')
     status = Column(Integer, nullable=False,
                     comment='状态: 1=正常, 0=禁用', default=1)
+    bi_hook = Column(String(255), nullable=False, comment='业务钩子')
 
     # 虚拟字段
     children = []
